@@ -1,0 +1,34 @@
+#!/home/user/myshell/myshell
+# Absolute path is necessary in shebang.
+# My simple script
+
+# merrno
+# IGNORED!
+
+mecho " ---- mpwd"
+mpwd
+
+mecho " ---- mycat --help"
+mycat --help
+
+mecho " ---- Testing comment parsing ---- echo 'Files: #'"
+echo 'Files: #''
+
+mecho " ---- Testing comment parsing ---- mecho '#dad sd#3asd' # adsdasd"
+mecho '#dad sd#3asd' # adsdasd
+
+mecho " ---- Testing comment parsing ---- mecho 'asd#d asd' # asd ad"
+mecho 'asd#d asd' # asd ad 
+
+mecho " ---- Testing comment parsing ---- mpwdw # dadsdasd"
+mpwd # dadsdasd
+
+mecho " ---- ls"
+ls
+
+# mecho " ---- ls --help"
+# ls --help
+
+mecho " ---- ls fesoijfoij ---- merrno"
+ls fesoijfoij
+merrno
