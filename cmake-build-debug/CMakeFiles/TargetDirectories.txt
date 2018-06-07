@@ -1,3 +1,0 @@
-/home/pch/UCU/csa_2018/myshell-master/better_myshell/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/pch/UCU/csa_2018/myshell-master/better_myshell/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/pch/UCU/csa_2018/myshell-master/better_myshell/cmake-build-debug/CMakeFiles/myshell.dir
