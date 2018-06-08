@@ -7,21 +7,38 @@
 
 #include <glob.h>
 #include <unistd.h>
-#include <boost/algorithm/string/replace.hpp>
-#include <boost/regex.hpp>
+#include <queue>
+#include <map>
+#include <vector>
+#include <algorithm>
 #include <sys/wait.h>
 #include <sys/types.h>
+
+#include <boost/algorithm/string/replace.hpp>
+#include <boost/regex.hpp>
+
 #include "../Commands/Command.h"
+#include "../CmdFunctions/CmdFunctions.h"
 
 
 class ForkExec : public Command {
 
 public:
+    std::map<std::string, std::string> exec_flags;
+
+    const std::map<std::string, std::string> &getExec_flags() const;
+
+    void setExec_flags(const std::map<std::string, std::string> &exec_flags);
+
     std::string bin;
 
     ForkExec();
 
     bool compare(const std::string &input) override;
+
+    void pipeAll(std::string &input);
+
+    void executeAndRedirect(std::string input, std::string redirect);
 
     void execute(std::vector<std::string> input) override;
 

@@ -7,6 +7,9 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <vector>
+#include <algorithm>
+
 #include "../ForkExec/ForkExec.h"
 #include "../Commands/Command.h"
 #include "../Commands/Merrno/Merrno.h"
@@ -34,7 +37,7 @@ public:
 
     std::vector<Command *> createCommands();
 
-    void runCmd(std::string &input, std::vector<Command *> &commands, ForkExec &fork_exec);
+    void runCmd(std::string &input);
 
     void setPath();
 

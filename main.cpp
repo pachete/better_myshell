@@ -16,21 +16,15 @@ int main(int argc, char *argv[]) {
 
     cmd_functions.setPath();
 
-    ForkExec fork_exec = ForkExec();
-
-
-    std::vector<Command *> commands = cmd_functions.createCommands();
-
+    std::string input;
     std::string msg;
 
-    bool exit = false;
-
-    while (!exit) {
+    for (;;) {
 
         msg = Command::cwd;
         msg += "$ ";
 
-        std::string input = readline(msg.c_str());
+        input = readline(msg.c_str());
 
         if (!input.empty()) {
             add_history(input.c_str());
@@ -38,6 +32,6 @@ int main(int argc, char *argv[]) {
             continue;
         }
 
-        cmd_functions.runCmd(input, commands, fork_exec);
+        cmd_functions.runCmd(input);
     }
 }

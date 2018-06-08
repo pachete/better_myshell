@@ -77,7 +77,16 @@ std::vector<std::string> CmdFunctions::get_args(std::string input) {
     return args;
 }
 
-void CmdFunctions::runCmd(std::string &input, std::vector<Command *> &commands, ForkExec &fork_exec) {
+void CmdFunctions::runCmd(std::string &input) {
+
+    ForkExec fork_exec;
+    std::vector<Command *> commands = createCommands();
+
+    if (input.find('|') != std::string::npos) {
+        fork_exec.pipeAll(input);
+        return;
+    }
+
     std::vector<std::string> args = get_args(input);
     if (args.empty()) {
         return;
@@ -106,10 +115,36 @@ void CmdFunctions::runCmd(std::string &input, std::vector<Command *> &commands, 
         return;
     }
 
+    if (input.find('>') != std::string::npos && input.find("2>&1") != std::string::npos) {
+        fork_exec.setEnv_vars(env_vars);
+        fork_exec.executeAndRedirect(input.substr(0, input.find('>')),
+                                     input.substr(
+                                             input.find('>') + 1,
+                                             input.size() + 1 - input.find('>') - input.find("2>&1")));
+        return;
+    } else if (input.find(">2") != std::string::npos) {
+        fork_exec.setEnv_vars(env_vars);
+        fork_exec.executeAndRedirect(input.substr(0, input.find(">2")),
+                                     input.substr(input.find(">2") + 2));
+        return;
+    } else if (input.find('>') != std::string::npos) {
+        fork_exec.setEnv_vars(env_vars);
+        std::cout << ":" << input.substr(0, input.find('>')) << ":" << std::endl;
+        fork_exec.executeAndRedirect(input.substr(0, input.find('>')),
+                                     input.substr(input.find('>') + 2));
+        return;
+    } else if (input.find('<') != std::string::npos) {
+        fork_exec.setEnv_vars(env_vars);
+        fork_exec.executeAndRedirect(input.substr(0, input.find('<')),
+                                     input.substr(input.find('<') + 2));
+        return;
+    }
+
+
     fork_exec.setEnv_vars(env_vars);
     fork_exec.execute(args);
-
 }
+
 
 std::string CmdFunctions::removeComments(std::string line) {
     bool in_quotes = false;
@@ -160,10 +195,6 @@ void CmdFunctions::handleScript(std::string script) {
 
     setPath();
 
-    ForkExec fork_exec = ForkExec();
-
-    std::vector<Command *> commands = createCommands();
-
     std::ifstream file(script);
     std::string line;
 
@@ -177,6 +208,6 @@ void CmdFunctions::handleScript(std::string script) {
             line = removeComments(line);
         }
 
-        runCmd(line, commands, fork_exec);
+        runCmd(line);
     }
 }
