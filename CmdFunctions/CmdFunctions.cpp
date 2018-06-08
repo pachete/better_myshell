@@ -140,6 +140,11 @@ void CmdFunctions::runCmd(std::string &input) {
         return;
     }
 
+    if (input.find('&') != std::string::npos) {
+        fork_exec.setEnv_vars(env_vars);
+        fork_exec.executeAndRedirect(input.substr(0, input.size() - 2), "&");
+        return;
+    }
 
     fork_exec.setEnv_vars(env_vars);
     fork_exec.execute(args);
